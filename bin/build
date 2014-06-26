@@ -17,30 +17,25 @@ function exec(cmd, callback) {
 // Copy files from grunt-ed output
 exec('grunt --dist="'+relative+'" --stable', function() {
 
-	// Also generate basic files
-	exec('grunt basic --dist="'+relative+'" --stable', function() {
+	// Add the files to the git repo
+	cp.exec('git add *');
 
-		// Add the files to the git repo
-		cp.exec('git add *');
-
-		// Output to bower.json
-		fs.writeFile('bower.json', JSON.stringify({
-			"name": json.name.toLowerCase(),
-			"description": json.description,
-			"version": json.version,
-			"homepage": "http://qtip2.com",
-			"location": "https://github.com/qTip2/bower",
-			"repository": json.repository,
-			"authors": [ json.author ],
-			"license": json.licenses.map(function(license) { return license.type }),
-			"keywords": json.keywords,
-			"main": [
-				"./jquery.qtip.js",
-				"./basic/jquery.qtip.js"
-			],
-			"ignore": [
-				"bin"
-			]
-		}, null, 4));
-	});
+	// Output to bower.json
+	fs.writeFile('bower.json', JSON.stringify({
+		"name": json.name.toLowerCase(),
+		"description": json.description + " ... This is just a wrapper that works with Ember CLI",
+		"version": json.version,
+		"homepage": "http://qtip2.com",
+		"location": "https://github.com/gutschik/ember-qtip2",
+		"repository": json.repository,
+		"authors": [ json.author ],
+		"license": json.licenses.map(function(license) { return license.type }),
+		"keywords": json.keywords,
+		"main": [
+			"./jquery.qtip.js"
+		],
+		"ignore": [
+			"bin"
+		]
+	}, null, 4));
 });
